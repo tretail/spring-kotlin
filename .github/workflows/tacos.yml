@@ -1,4 +1,4 @@
-name: Build tacos backend Application
+name: CI/CD tacos
 
 on:
   push:
