@@ -1,9 +1,9 @@
-name: Build blog backend Application
+name: Build tacos backend Application
 
 on:
   push:
     paths:
-      - 'blog/**'
+      - 'tacos/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./blog
+        working-directory: ./tacos
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
