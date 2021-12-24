@@ -1,0 +1,28 @@
+name: CI/CD for frontend
+
+on:
+  push:
+    paths:
+      - 'frontend/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.13.1
+      - name: Install dependencies
+        run: npm install
+      - name: Build application
+        run: npm run build
+      - name: Run tests
+        run: npm run test
