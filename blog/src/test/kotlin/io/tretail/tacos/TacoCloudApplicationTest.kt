@@ -9,6 +9,7 @@ class TacoCloudApplicationTests {
 
     @Test
     fun contextLoads() {
+        // NOOP: Test if app can load Spring context
     }
 
 }
