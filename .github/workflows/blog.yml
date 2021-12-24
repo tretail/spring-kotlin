@@ -11,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./blog
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -18,4 +21,4 @@ jobs:
         with:
           java-version: 1.8
       - name: Build the app
-        run: ./blog/gradlew assembleDebug
+        run: ./gradlew build
