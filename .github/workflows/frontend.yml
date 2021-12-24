@@ -17,9 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Node environment
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 16.13.1
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: npm install
       - name: Build application
