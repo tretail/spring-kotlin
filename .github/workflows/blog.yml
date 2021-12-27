@@ -3,24 +3,70 @@ name: CI/CD blog
 on:
   push:
     paths:
-      - 'blog/**'
+      - 'blog-backend/**'
+      - 'blog-frontend/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build:
+  build_backend:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./blog
+        working-directory: ./blog-backend
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
       - name: Set up JDK 1.8
         uses: actions/setup-java@v2
         with:
           distribution: temurin
           java-version: 8
           cache: gradle
-      - name: Build the app
+      - name: Build and test
         run: ./gradlew build --no-daemon
+      - name: Archive JAR artifact
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: Package
+          path: blog-backend/build/libs
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: junit-report
+          path: blog-backend/build/test-results/test/TEST-*.xml
+
+  build_frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./blog-frontend
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+          cache: npm
+          cache-dependency-path: blog-frontend/package-lock.json
+      - name: Install dependencies
+        run: npm install
+      - name: Build application
+        run: npm run build
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-without-markdown
+          path: |
+            blog-frontend/dist
+            !blog-frontend/dist/**/*.md
+      - name: Run tests with coverage
+        run: npm run cov
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: blog-frontend/output/test/code-coverage.html
