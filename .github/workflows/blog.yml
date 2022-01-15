@@ -12,9 +12,6 @@ on:
 jobs:
   build_backend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./blog-backend
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -25,7 +22,7 @@ jobs:
           java-version: 8
           cache: gradle
       - name: Build and test
-        run: ./gradlew build --no-daemon
+        run: ./gradlew :blog-backend:build --no-daemon
       - name: Archive JAR artifact
         uses: actions/upload-artifact@v2
         if: ${{ always() }}

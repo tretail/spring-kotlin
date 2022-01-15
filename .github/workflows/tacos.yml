@@ -12,9 +12,6 @@ jobs:
   build:
     name: CI/CD
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./tacos
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,7 +22,7 @@ jobs:
           java-version: 8
           cache: gradle
       - name: Build the app
-        run: ./gradlew build --no-daemon
+        run: ./gradlew :tacos:build --no-daemon
 
   codacy-analysis-cli:
     name: Codacy Analysis CLI
